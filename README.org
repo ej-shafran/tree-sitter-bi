@@ -7,6 +7,8 @@
   [[https://tree-sitter.github.io/tree-sitter/creating-parsers][custom
   TreeSitter parsers]].
 
+  [[./screenshot.png]]
+
 ** Running Locally
 
    Make sure you install all the dependencies. I use PNPM but you can use NPM
