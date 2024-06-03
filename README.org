@@ -1,0 +1,3 @@
+* tree-sitter-bi
+
+  A TreeSitter parser for the [[https://github.com/tsoding/bi-format][BI format]].

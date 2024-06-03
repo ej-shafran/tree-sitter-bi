@@ -1,0 +1,26 @@
+{
+  "name": "tree-sitter-bi",
+  "version": "1.0.0",
+  "description": "A TreeSitter parser for the [BI format](https://github.com/tsoding/bi-format).",
+  "main": "grammar.js",
+  "scripts": {
+    "test": "tree-sitter test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ej-shafran/tree-sitter-bi.git"
+  },
+  "keywords": [
+    "tree-sitter",
+    "treesitter",
+    "tsoding",
+    "bi",
+    "parser"
+  ],
+  "author": "ej-shafran",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ej-shafran/tree-sitter-bi/issues"
+  },
+  "homepage": "https://github.com/ej-shafran/tree-sitter-bi#readme"
+}
