@@ -80,22 +80,18 @@
           "value": "\n"
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "blob_value"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "blob_value"
+        },
+        {
+          "type": "STRING",
+          "value": "\n"
         }
       ]
     },
     "identifier": {
       "type": "PATTERN",
-      "value": "[A-Za-z]+"
+      "value": "[-_A-Za-z]+"
     }
   },
   "extras": [

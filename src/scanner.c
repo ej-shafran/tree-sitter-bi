@@ -1,22 +1,73 @@
+#include "tree_sitter/alloc.h"
 #include "tree_sitter/parser.h"
+#include <ctype.h>
 #include <stdbool.h>
-#include <time.h>
 
 typedef enum { BLOB_VALUE, LENGTH } TokenType;
+
+typedef struct {
+  int count;
+} Scanner;
+
+static bool parse_length(Scanner *s, TSLexer *lexer,
+                         const bool *valid_symbols) {
+
+  if (!valid_symbols[LENGTH])
+    return false;
+
+  if (!isdigit(lexer->lookahead))
+    return false;
+
+  int value = 0;
+  while (isdigit(lexer->lookahead)) {
+    value *= 10;
+    value += lexer->lookahead - '0';
+    lexer->advance(lexer, false);
+  }
+
+  s->count = value;
+  lexer->result_symbol = LENGTH;
+  return true;
+}
+
+static bool parse_blob_value(Scanner *s, TSLexer *lexer,
+                             const bool *valid_symbols) {
+  if (!valid_symbols[BLOB_VALUE])
+    return false;
+
+  for (int i = 0; i < s->count; i++) {
+    if (lexer->eof(lexer))
+      return false;
+
+    lexer->advance(lexer, false);
+  }
+
+  lexer->result_symbol = BLOB_VALUE;
+  return true;
+}
 
 /* This function should create your scanner object. It will only be called once
  * anytime your language is set on a parser. Often, you will want to allocate
  * memory on the heap and return a pointer to it. If your external scanner
  * doesn't need to maintain any state, it's ok to return NULL.
  */
-void *tree_sitter_bi_external_scanner_create(void) { return NULL; }
+void *tree_sitter_bi_external_scanner_create(void) {
+  Scanner *s = (Scanner *)ts_malloc(sizeof(Scanner));
+
+  s->count = 0;
+
+  return s;
+}
 
 /* This function should free any memory used by your scanner. It is called once
  * when a parser is deleted or assigned a different language. It receives as an
  * argument the same pointer that was returned from the create function. If your
  * create function didn’t allocate any memory, this function can be a noop.
  */
-void tree_sitter_bi_external_scanner_destroy(void *payload) {}
+void tree_sitter_bi_external_scanner_destroy(void *payload) {
+  Scanner *s = (Scanner *)s;
+  ts_free(s);
+}
 
 /* This function should copy the complete state of your scanner into a given
  * byte buffer, and return the number of bytes written. The function is called
@@ -104,6 +155,16 @@ void tree_sitter_bi_external_scanner_deserialize(void *payload,
  */
 bool tree_sitter_bi_external_scanner_scan(void *payload, TSLexer *lexer,
                                           const bool *valid_symbols) {
-  // TODO
+
+  Scanner *s = (Scanner *)payload;
+
+  if (parse_length(s, lexer, valid_symbols)) {
+    return true;
+  }
+
+  if (parse_blob_value(s, lexer, valid_symbols)) {
+    return true;
+  }
+
   return false;
 }

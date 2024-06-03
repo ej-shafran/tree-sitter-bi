@@ -19,9 +19,10 @@ module.exports = grammar({
         " ",
         $.length,
         "\n",
-        optional($.blob_value),
+        $.blob_value,
+        "\n",
       ),
 
-    identifier: () => /[A-Za-z]+/,
+    identifier: () => /[-_A-Za-z]+/,
   },
 });

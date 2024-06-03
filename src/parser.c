@@ -5,14 +5,14 @@
 #endif
 
 #define LANGUAGE_VERSION 14
-#define STATE_COUNT 16
+#define STATE_COUNT 17
 #define LARGE_STATE_COUNT 2
 #define SYMBOL_COUNT 13
 #define ALIAS_COUNT 0
 #define TOKEN_COUNT 9
 #define EXTERNAL_TOKEN_COUNT 2
 #define FIELD_COUNT 0
-#define MAX_ALIAS_SEQUENCE_LENGTH 6
+#define MAX_ALIAS_SEQUENCE_LENGTH 7
 #define PRODUCTION_ID_COUNT 1
 
 enum ts_symbol_identifiers {
@@ -142,6 +142,7 @@ static const TSStateId ts_primary_state_ids[STATE_COUNT] = {
   [13] = 13,
   [14] = 14,
   [15] = 15,
+  [16] = 16,
 };
 
 static bool ts_lex(TSLexer *lexer, TSStateId state) {
@@ -155,7 +156,9 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       if (lookahead == ' ') ADVANCE(6);
       if (lookahead == ':') ADVANCE(3);
       if (('0' <= lookahead && lookahead <= '9')) ADVANCE(8);
-      if (('A' <= lookahead && lookahead <= 'Z') ||
+      if (lookahead == '-' ||
+          ('A' <= lookahead && lookahead <= 'Z') ||
+          lookahead == '_' ||
           ('a' <= lookahead && lookahead <= 'z')) ADVANCE(10);
       END_STATE();
     case 1:
@@ -189,7 +192,9 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       END_STATE();
     case 10:
       ACCEPT_TOKEN(sym_identifier);
-      if (('A' <= lookahead && lookahead <= 'Z') ||
+      if (lookahead == '-' ||
+          ('A' <= lookahead && lookahead <= 'Z') ||
+          lookahead == '_' ||
           ('a' <= lookahead && lookahead <= 'z')) ADVANCE(10);
       END_STATE();
     default:
@@ -202,7 +207,7 @@ static const TSLexMode ts_lex_modes[STATE_COUNT] = {
   [1] = {.lex_state = 0},
   [2] = {.lex_state = 0},
   [3] = {.lex_state = 0},
-  [4] = {.lex_state = 0, .external_lex_state = 2},
+  [4] = {.lex_state = 0},
   [5] = {.lex_state = 0},
   [6] = {.lex_state = 0},
   [7] = {.lex_state = 0},
@@ -210,10 +215,11 @@ static const TSLexMode ts_lex_modes[STATE_COUNT] = {
   [9] = {.lex_state = 0},
   [10] = {.lex_state = 0},
   [11] = {.lex_state = 0},
-  [12] = {.lex_state = 0},
-  [13] = {.lex_state = 0, .external_lex_state = 3},
+  [12] = {.lex_state = 0, .external_lex_state = 2},
+  [13] = {.lex_state = 0},
   [14] = {.lex_state = 0},
-  [15] = {.lex_state = 0},
+  [15] = {.lex_state = 0, .external_lex_state = 3},
+  [16] = {.lex_state = 0},
 };
 
 static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
@@ -229,7 +235,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_length] = ACTIONS(1),
   },
   [1] = {
-    [sym_document] = STATE(9),
+    [sym_document] = STATE(8),
     [sym_int_field] = STATE(2),
     [sym_blob_field] = STATE(2),
     [aux_sym_document_repeat1] = STATE(2),
@@ -262,48 +268,47 @@ static const uint16_t ts_small_parse_table[] = {
       sym_int_field,
       sym_blob_field,
       aux_sym_document_repeat1,
-  [30] = 2,
-    ACTIONS(21), 1,
-      sym_blob_value,
+  [30] = 1,
     ACTIONS(19), 3,
       ts_builtin_sym_end,
       anon_sym_COLONi,
       anon_sym_COLONb,
-  [39] = 1,
-    ACTIONS(23), 3,
+  [36] = 1,
+    ACTIONS(21), 3,
       ts_builtin_sym_end,
       anon_sym_COLONi,
       anon_sym_COLONb,
-  [45] = 1,
-    ACTIONS(25), 3,
-      ts_builtin_sym_end,
-      anon_sym_COLONi,
-      anon_sym_COLONb,
-  [51] = 1,
+  [42] = 1,
+    ACTIONS(23), 1,
+      sym_identifier,
+  [46] = 1,
+    ACTIONS(25), 1,
+      sym_identifier,
+  [50] = 1,
     ACTIONS(27), 1,
-      sym_identifier,
-  [55] = 1,
-    ACTIONS(29), 1,
-      sym_identifier,
-  [59] = 1,
-    ACTIONS(31), 1,
       ts_builtin_sym_end,
-  [63] = 1,
+  [54] = 1,
+    ACTIONS(29), 1,
+      anon_sym_SPACE,
+  [58] = 1,
+    ACTIONS(31), 1,
+      anon_sym_SPACE,
+  [62] = 1,
     ACTIONS(33), 1,
-      anon_sym_SPACE,
-  [67] = 1,
-    ACTIONS(35), 1,
-      anon_sym_SPACE,
-  [71] = 1,
-    ACTIONS(37), 1,
       sym_int_value,
-  [75] = 1,
-    ACTIONS(39), 1,
+  [66] = 1,
+    ACTIONS(35), 1,
       sym_length,
-  [79] = 1,
-    ACTIONS(41), 1,
+  [70] = 1,
+    ACTIONS(37), 1,
       anon_sym_LF,
-  [83] = 1,
+  [74] = 1,
+    ACTIONS(39), 1,
+      anon_sym_LF,
+  [78] = 1,
+    ACTIONS(41), 1,
+      sym_blob_value,
+  [82] = 1,
     ACTIONS(43), 1,
       anon_sym_LF,
 };
@@ -312,42 +317,43 @@ static const uint32_t ts_small_parse_table_map[] = {
   [SMALL_STATE(2)] = 0,
   [SMALL_STATE(3)] = 15,
   [SMALL_STATE(4)] = 30,
-  [SMALL_STATE(5)] = 39,
-  [SMALL_STATE(6)] = 45,
-  [SMALL_STATE(7)] = 51,
-  [SMALL_STATE(8)] = 55,
-  [SMALL_STATE(9)] = 59,
-  [SMALL_STATE(10)] = 63,
-  [SMALL_STATE(11)] = 67,
-  [SMALL_STATE(12)] = 71,
-  [SMALL_STATE(13)] = 75,
-  [SMALL_STATE(14)] = 79,
-  [SMALL_STATE(15)] = 83,
+  [SMALL_STATE(5)] = 36,
+  [SMALL_STATE(6)] = 42,
+  [SMALL_STATE(7)] = 46,
+  [SMALL_STATE(8)] = 50,
+  [SMALL_STATE(9)] = 54,
+  [SMALL_STATE(10)] = 58,
+  [SMALL_STATE(11)] = 62,
+  [SMALL_STATE(12)] = 66,
+  [SMALL_STATE(13)] = 70,
+  [SMALL_STATE(14)] = 74,
+  [SMALL_STATE(15)] = 78,
+  [SMALL_STATE(16)] = 82,
 };
 
 static const TSParseActionEntry ts_parse_actions[] = {
   [0] = {.entry = {.count = 0, .reusable = false}},
   [1] = {.entry = {.count = 1, .reusable = false}}, RECOVER(),
   [3] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_document, 0, 0, 0),
-  [5] = {.entry = {.count = 1, .reusable = true}}, SHIFT(7),
-  [7] = {.entry = {.count = 1, .reusable = true}}, SHIFT(8),
+  [5] = {.entry = {.count = 1, .reusable = true}}, SHIFT(6),
+  [7] = {.entry = {.count = 1, .reusable = true}}, SHIFT(7),
   [9] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_document, 1, 0, 0),
   [11] = {.entry = {.count = 1, .reusable = true}}, REDUCE(aux_sym_document_repeat1, 2, 0, 0),
-  [13] = {.entry = {.count = 2, .reusable = true}}, REDUCE(aux_sym_document_repeat1, 2, 0, 0), SHIFT_REPEAT(7),
-  [16] = {.entry = {.count = 2, .reusable = true}}, REDUCE(aux_sym_document_repeat1, 2, 0, 0), SHIFT_REPEAT(8),
-  [19] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_blob_field, 5, 0, 0),
-  [21] = {.entry = {.count = 1, .reusable = true}}, SHIFT(6),
-  [23] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_int_field, 5, 0, 0),
-  [25] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_blob_field, 6, 0, 0),
-  [27] = {.entry = {.count = 1, .reusable = true}}, SHIFT(10),
+  [13] = {.entry = {.count = 2, .reusable = true}}, REDUCE(aux_sym_document_repeat1, 2, 0, 0), SHIFT_REPEAT(6),
+  [16] = {.entry = {.count = 2, .reusable = true}}, REDUCE(aux_sym_document_repeat1, 2, 0, 0), SHIFT_REPEAT(7),
+  [19] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_int_field, 5, 0, 0),
+  [21] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_blob_field, 7, 0, 0),
+  [23] = {.entry = {.count = 1, .reusable = true}}, SHIFT(9),
+  [25] = {.entry = {.count = 1, .reusable = true}}, SHIFT(10),
+  [27] = {.entry = {.count = 1, .reusable = true}},  ACCEPT_INPUT(),
   [29] = {.entry = {.count = 1, .reusable = true}}, SHIFT(11),
-  [31] = {.entry = {.count = 1, .reusable = true}},  ACCEPT_INPUT(),
-  [33] = {.entry = {.count = 1, .reusable = true}}, SHIFT(12),
-  [35] = {.entry = {.count = 1, .reusable = true}}, SHIFT(13),
-  [37] = {.entry = {.count = 1, .reusable = true}}, SHIFT(14),
+  [31] = {.entry = {.count = 1, .reusable = true}}, SHIFT(12),
+  [33] = {.entry = {.count = 1, .reusable = true}}, SHIFT(13),
+  [35] = {.entry = {.count = 1, .reusable = true}}, SHIFT(14),
+  [37] = {.entry = {.count = 1, .reusable = true}}, SHIFT(4),
   [39] = {.entry = {.count = 1, .reusable = true}}, SHIFT(15),
-  [41] = {.entry = {.count = 1, .reusable = true}}, SHIFT(5),
-  [43] = {.entry = {.count = 1, .reusable = true}}, SHIFT(4),
+  [41] = {.entry = {.count = 1, .reusable = true}}, SHIFT(16),
+  [43] = {.entry = {.count = 1, .reusable = true}}, SHIFT(5),
 };
 
 enum ts_external_scanner_symbol_identifiers {
@@ -366,10 +372,10 @@ static const bool ts_external_scanner_states[4][EXTERNAL_TOKEN_COUNT] = {
     [ts_external_token_length] = true,
   },
   [2] = {
-    [ts_external_token_blob_value] = true,
+    [ts_external_token_length] = true,
   },
   [3] = {
-    [ts_external_token_length] = true,
+    [ts_external_token_blob_value] = true,
   },
 };
 
