@@ -1,3 +1,35 @@
 * tree-sitter-bi
 
-  A TreeSitter parser for the [[https://github.com/tsoding/bi-format][BI format]].
+  A TreeSitter parser for the [[https://github.com/tsoding/bi-format][BI
+  format]].
+
+  Read more about
+  [[https://tree-sitter.github.io/tree-sitter/creating-parsers][custom
+  TreeSitter parsers]].
+
+** Running Locally
+
+   Make sure you install all the dependencies. I use PNPM but you can use NPM
+   (just swap =pnpm= command with =npm=).
+
+   #+begin_src bash
+   pnpm install
+   #+end_src
+
+   Build the external scanner (needs C compiler):
+
+   #+begin_src bash
+   pnpm build
+   #+end_src
+
+   To see it in full effect, use =pnpm highlight= (if your terminal has colors,
+   otherwise either just parse regularly or use the =--html= flag to create
+   HTML):
+
+   #+begin_src bash
+   pnpm highlight examples/bi.bi
+   #+end_src
+
+** TODOs
+
+*** TODO Make this usable directly as a Neovim plugin
