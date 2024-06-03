@@ -106,3 +106,18 @@ Valid identifiers
     (identifier)
     (int_value))
 )
+
+====================
+Blobs with numbers
+====================
+:b hi 2
+12
+
+--------------------
+(document
+  (blob_field
+    (field_marker)
+    (identifier)
+    (length)
+    (blob_value))
+)
