@@ -1,0 +1,20 @@
+{
+  "name": "bi",
+  "rules": {
+    "document": {
+      "type": "STRING",
+      "value": "hello"
+    }
+  },
+  "extras": [
+    {
+      "type": "STRING",
+      "value": "\r"
+    }
+  ],
+  "conflicts": [],
+  "precedences": [],
+  "externals": [],
+  "inline": [],
+  "supertypes": []
+}

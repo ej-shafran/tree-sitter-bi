@@ -1,0 +1,57 @@
+====================
+Int fields
+====================
+:i count 2
+
+--------------------
+(document
+  (int_field
+    (field_marker)
+    (identifier)
+    (int_value))
+)
+====================
+Blob fields (empty)
+====================
+:b empty 0
+
+--------------------
+(document
+  (blob_field
+    (field_marker)
+    (identifier)
+    (length))
+)
+====================
+Blob fields
+====================
+:b text 13
+Hello, world
+
+--------------------
+(document
+  (blob_field
+    (field_marker)
+    (identifier)
+    (length)
+    (blob_value))
+)
+====================
+Multiple fields
+====================
+:i count 2
+:b text 13
+Hello, world
+
+--------------------
+(document
+  (int_field
+    (field_marker)
+    (identifier)
+    (int_value))
+  (blob_field
+    (field_marker)
+    (identifier)
+    (length)
+    (blob_value))
+)
