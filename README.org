@@ -46,4 +46,4 @@
 
 ** TODOs
 
-*** TODO Make this usable directly as a Neovim plugin
+   - [ ] Make this usable directly as a Neovim plugin
