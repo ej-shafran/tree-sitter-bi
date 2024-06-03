@@ -19,7 +19,7 @@
    Build the external scanner (needs C compiler):
 
    #+begin_src bash
-   pnpm build
+   pnpm run build
    #+end_src
 
    To see it in full effect, use =pnpm highlight= (if your terminal has colors,
@@ -27,7 +27,21 @@
    HTML):
 
    #+begin_src bash
-   pnpm highlight examples/bi.bi
+   pnpm run highlight examples/bi.bi
+   #+end_src
+
+   If you make any changes to =grammar.js=, make sure to run:
+
+   #+begin_src bash
+   pnpm run generate
+   #+end_src
+
+   To update the relevant files in the =src/= directory.
+
+   Finally, you can run the tests in the =test/corpus/= directory:
+
+   #+begin_src bash
+   pnpm test
    #+end_src
 
 ** TODOs
