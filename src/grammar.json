@@ -24,10 +24,14 @@
           "type": "ALIAS",
           "content": {
             "type": "STRING",
-            "value": ":i "
+            "value": ":i"
           },
           "named": true,
           "value": "field_marker"
+        },
+        {
+          "type": "STRING",
+          "value": " "
         },
         {
           "type": "SYMBOL",
@@ -58,10 +62,14 @@
           "type": "ALIAS",
           "content": {
             "type": "STRING",
-            "value": ":b "
+            "value": ":b"
           },
           "named": true,
           "value": "field_marker"
+        },
+        {
+          "type": "STRING",
+          "value": " "
         },
         {
           "type": "SYMBOL",
@@ -82,10 +90,6 @@
         {
           "type": "SYMBOL",
           "name": "blob_value"
-        },
-        {
-          "type": "STRING",
-          "value": "\n"
         }
       ]
     },

@@ -2,6 +2,7 @@
 #include "tree_sitter/parser.h"
 #include <ctype.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 typedef enum { BLOB_VALUE, LENGTH } TokenType;
 
@@ -37,11 +38,16 @@ static bool parse_blob_value(Scanner *s, TSLexer *lexer,
 
   for (int i = 0; i < s->count; i++) {
     if (lexer->eof(lexer))
-      break;
+      goto success;
 
     lexer->advance(lexer, false);
   }
 
+  if (lexer->lookahead == '\n') {
+    lexer->advance(lexer, false);
+  }
+
+success:
   lexer->result_symbol = BLOB_VALUE;
   return true;
 }
@@ -65,7 +71,7 @@ void *tree_sitter_bi_external_scanner_create(void) {
  * create function didn’t allocate any memory, this function can be a noop.
  */
 void tree_sitter_bi_external_scanner_destroy(void *payload) {
-  Scanner *s = (Scanner *)s;
+  Scanner *s = (Scanner *)payload;
   ts_free(s);
 }
 
@@ -86,8 +92,8 @@ void tree_sitter_bi_external_scanner_destroy(void *payload) {
  */
 unsigned tree_sitter_bi_external_scanner_serialize(void *payload,
                                                    char *buffer) {
-  // TODO
-  return 0;
+  Scanner *s = (Scanner *)payload;
+  return sprintf(buffer, "%d", s->count);
 }
 
 /* This function should restore the state of your scanner based the bytes that
@@ -100,7 +106,15 @@ unsigned tree_sitter_bi_external_scanner_serialize(void *payload,
 void tree_sitter_bi_external_scanner_deserialize(void *payload,
                                                  const char *buffer,
                                                  unsigned length) {
-  // TODO
+  Scanner *s = (Scanner *)payload;
+  s->count = 0;
+
+  int value = 0;
+  for (int i = 0; i < length; i++) {
+    value *= 10;
+    value += (buffer[i]) - '0';
+  }
+  s->count = value;
 }
 
 /* This function is responsible for recognizing external tokens. It should

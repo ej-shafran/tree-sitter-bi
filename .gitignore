@@ -28,6 +28,7 @@ dist/
 *.dylib
 *.dll
 *.pc
+*.dSYM/
 
 # Example dirs
 /examples/*/
