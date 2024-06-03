@@ -59,7 +59,13 @@
   "tree-sitter": [
     {
       "scope": "source.bi",
-      "injection-regex": "^bi$"
+      "file-types": [
+        "bi"
+      ],
+      "injection-regex": "^bi$",
+      "highlights": [
+        "queries/highlights.scm"
+      ]
     }
   ]
 }
