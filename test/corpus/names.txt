@@ -1,0 +1,25 @@
+====================
+Spaces and puncuation
+====================
+:i hello, world 123
+
+--------------------
+(document
+  (int_field
+    (field_marker)
+    (identifier)
+    (int_value))
+)
+
+====================
+Numbers
+====================
+:i 123 123
+
+--------------------
+(document
+  (int_field
+    (field_marker)
+    (identifier)
+    (int_value))
+)
