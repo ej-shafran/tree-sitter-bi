@@ -3,7 +3,7 @@ module.exports = grammar({
 
   extras: () => ["\r"],
 
-  externals: ($) => [$.blob_value, $.length],
+  externals: ($) => [$.blob_value, $.length, $.identifier],
 
   rules: {
     document: ($) => repeat(choice($.int_field, $.blob_field)),
@@ -29,7 +29,5 @@ module.exports = grammar({
         "\n",
         $.blob_value,
       ),
-
-    identifier: () => /[-_A-Za-z]+/,
   },
 });

@@ -92,10 +92,6 @@
           "name": "blob_value"
         }
       ]
-    },
-    "identifier": {
-      "type": "PATTERN",
-      "value": "[-_A-Za-z]+"
     }
   },
   "extras": [
@@ -114,6 +110,10 @@
     {
       "type": "SYMBOL",
       "name": "length"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "identifier"
     }
   ],
   "inline": [],

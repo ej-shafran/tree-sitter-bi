@@ -10,7 +10,7 @@
 #define SYMBOL_COUNT 13
 #define ALIAS_COUNT 0
 #define TOKEN_COUNT 9
-#define EXTERNAL_TOKEN_COUNT 2
+#define EXTERNAL_TOKEN_COUNT 3
 #define FIELD_COUNT 0
 #define MAX_ALIAS_SEQUENCE_LENGTH 7
 #define PRODUCTION_ID_COUNT 1
@@ -21,9 +21,9 @@ enum ts_symbol_identifiers {
   anon_sym_LF = 3,
   sym_int_value = 4,
   anon_sym_COLONb = 5,
-  sym_identifier = 6,
-  sym_blob_value = 7,
-  sym_length = 8,
+  sym_blob_value = 6,
+  sym_length = 7,
+  sym_identifier = 8,
   sym_document = 9,
   sym_int_field = 10,
   sym_blob_field = 11,
@@ -37,9 +37,9 @@ static const char * const ts_symbol_names[] = {
   [anon_sym_LF] = "\n",
   [sym_int_value] = "int_value",
   [anon_sym_COLONb] = "field_marker",
-  [sym_identifier] = "identifier",
   [sym_blob_value] = "blob_value",
   [sym_length] = "length",
+  [sym_identifier] = "identifier",
   [sym_document] = "document",
   [sym_int_field] = "int_field",
   [sym_blob_field] = "blob_field",
@@ -53,9 +53,9 @@ static const TSSymbol ts_symbol_map[] = {
   [anon_sym_LF] = anon_sym_LF,
   [sym_int_value] = sym_int_value,
   [anon_sym_COLONb] = anon_sym_COLONi,
-  [sym_identifier] = sym_identifier,
   [sym_blob_value] = sym_blob_value,
   [sym_length] = sym_length,
+  [sym_identifier] = sym_identifier,
   [sym_document] = sym_document,
   [sym_int_field] = sym_int_field,
   [sym_blob_field] = sym_blob_field,
@@ -87,15 +87,15 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .visible = true,
     .named = true,
   },
-  [sym_identifier] = {
-    .visible = true,
-    .named = true,
-  },
   [sym_blob_value] = {
     .visible = true,
     .named = true,
   },
   [sym_length] = {
+    .visible = true,
+    .named = true,
+  },
+  [sym_identifier] = {
     .visible = true,
     .named = true,
   },
@@ -157,10 +157,6 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       if (lookahead == ' ') ADVANCE(4);
       if (lookahead == ':') ADVANCE(1);
       if (('0' <= lookahead && lookahead <= '9')) ADVANCE(6);
-      if (lookahead == '-' ||
-          ('A' <= lookahead && lookahead <= 'Z') ||
-          lookahead == '_' ||
-          ('a' <= lookahead && lookahead <= 'z')) ADVANCE(8);
       END_STATE();
     case 1:
       if (lookahead == 'b') ADVANCE(7);
@@ -185,13 +181,6 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
     case 7:
       ACCEPT_TOKEN(anon_sym_COLONb);
       END_STATE();
-    case 8:
-      ACCEPT_TOKEN(sym_identifier);
-      if (lookahead == '-' ||
-          ('A' <= lookahead && lookahead <= 'Z') ||
-          lookahead == '_' ||
-          ('a' <= lookahead && lookahead <= 'z')) ADVANCE(8);
-      END_STATE();
     default:
       return false;
   }
@@ -207,15 +196,15 @@ static const TSLexMode ts_lex_modes[STATE_COUNT] = {
   [6] = {.lex_state = 0},
   [7] = {.lex_state = 0},
   [8] = {.lex_state = 0},
-  [9] = {.lex_state = 0},
-  [10] = {.lex_state = 0},
+  [9] = {.lex_state = 0, .external_lex_state = 2},
+  [10] = {.lex_state = 0, .external_lex_state = 2},
   [11] = {.lex_state = 0},
   [12] = {.lex_state = 0},
   [13] = {.lex_state = 0},
-  [14] = {.lex_state = 0, .external_lex_state = 2},
+  [14] = {.lex_state = 0, .external_lex_state = 3},
   [15] = {.lex_state = 0},
   [16] = {.lex_state = 0},
-  [17] = {.lex_state = 0, .external_lex_state = 3},
+  [17] = {.lex_state = 0, .external_lex_state = 4},
 };
 
 static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
@@ -226,9 +215,9 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [anon_sym_LF] = ACTIONS(1),
     [sym_int_value] = ACTIONS(1),
     [anon_sym_COLONb] = ACTIONS(1),
-    [sym_identifier] = ACTIONS(1),
     [sym_blob_value] = ACTIONS(1),
     [sym_length] = ACTIONS(1),
+    [sym_identifier] = ACTIONS(1),
   },
   [1] = {
     [sym_document] = STATE(8),
@@ -360,22 +349,28 @@ static const TSParseActionEntry ts_parse_actions[] = {
 enum ts_external_scanner_symbol_identifiers {
   ts_external_token_blob_value = 0,
   ts_external_token_length = 1,
+  ts_external_token_identifier = 2,
 };
 
 static const TSSymbol ts_external_scanner_symbol_map[EXTERNAL_TOKEN_COUNT] = {
   [ts_external_token_blob_value] = sym_blob_value,
   [ts_external_token_length] = sym_length,
+  [ts_external_token_identifier] = sym_identifier,
 };
 
-static const bool ts_external_scanner_states[4][EXTERNAL_TOKEN_COUNT] = {
+static const bool ts_external_scanner_states[5][EXTERNAL_TOKEN_COUNT] = {
   [1] = {
     [ts_external_token_blob_value] = true,
     [ts_external_token_length] = true,
+    [ts_external_token_identifier] = true,
   },
   [2] = {
-    [ts_external_token_length] = true,
+    [ts_external_token_identifier] = true,
   },
   [3] = {
+    [ts_external_token_length] = true,
+  },
+  [4] = {
     [ts_external_token_blob_value] = true,
   },
 };

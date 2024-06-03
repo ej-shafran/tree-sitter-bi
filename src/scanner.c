@@ -4,11 +4,31 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-typedef enum { BLOB_VALUE, LENGTH } TokenType;
+typedef enum {
+  BLOB_VALUE,
+  LENGTH,
+  IDENTIFIER,
+} TokenType;
 
 typedef struct {
   int count;
 } Scanner;
+
+static bool parse_identifier(Scanner *s, TSLexer *lexer,
+                             const bool *valid_symbols) {
+  if (!valid_symbols[IDENTIFIER])
+    return false;
+
+  lexer->result_symbol = IDENTIFIER;
+  while (lexer->lookahead != '\n' && !lexer->eof(lexer)) {
+    if (lexer->lookahead == ' ') {
+      lexer->mark_end(lexer);
+    }
+    lexer->advance(lexer, false);
+  }
+
+  return true;
+}
 
 static bool parse_length(Scanner *s, TSLexer *lexer,
                          const bool *valid_symbols) {
@@ -177,6 +197,10 @@ bool tree_sitter_bi_external_scanner_scan(void *payload, TSLexer *lexer,
   }
 
   if (parse_blob_value(s, lexer, valid_symbols)) {
+    return true;
+  }
+
+  if (parse_identifier(s, lexer, valid_symbols)) {
     return true;
   }
 
