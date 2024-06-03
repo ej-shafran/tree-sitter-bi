@@ -27,11 +27,6 @@
     }
   },
   {
-    "type": "blob_value",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "document",
     "named": true,
     "fields": {},
@@ -74,16 +69,6 @@
     }
   },
   {
-    "type": "int_value",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "length",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "\n",
     "named": false
   },
@@ -92,11 +77,23 @@
     "named": false
   },
   {
+    "type": "blob_value",
+    "named": true
+  },
+  {
     "type": "field_marker",
     "named": true
   },
   {
     "type": "identifier",
+    "named": true
+  },
+  {
+    "type": "int_value",
+    "named": true
+  },
+  {
+    "type": "length",
     "named": true
   }
 ]

@@ -5,6 +5,7 @@
   "main": "grammar.js",
   "types": "bindings/node",
   "scripts": {
+    "ts": "tree-sitter",
     "generate": "tree-sitter generate",
     "build": "tree-sitter build",
     "test": "tree-sitter test",

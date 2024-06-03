@@ -93,23 +93,6 @@
         }
       ]
     },
-    "blob_value": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "PATTERN",
-          "value": ".+"
-        },
-        {
-          "type": "STRING",
-          "value": "\n"
-        }
-      ]
-    },
-    "length": {
-      "type": "PATTERN",
-      "value": "\\d+"
-    },
     "identifier": {
       "type": "PATTERN",
       "value": "[A-Za-z]+"
@@ -123,7 +106,16 @@
   ],
   "conflicts": [],
   "precedences": [],
-  "externals": [],
+  "externals": [
+    {
+      "type": "SYMBOL",
+      "name": "blob_value"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "length"
+    }
+  ],
   "inline": [],
   "supertypes": []
 }

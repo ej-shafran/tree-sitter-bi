@@ -3,6 +3,8 @@ module.exports = grammar({
 
   extras: () => ["\r"],
 
+  externals: ($) => [$.blob_value, $.length],
+
   rules: {
     document: ($) => repeat(choice($.int_field, $.blob_field)),
 
@@ -19,9 +21,6 @@ module.exports = grammar({
         "\n",
         optional($.blob_value),
       ),
-    // TODO: external scanner
-    blob_value: () => seq(/.+/, "\n"),
-    length: () => /\d+/,
 
     identifier: () => /[A-Za-z]+/,
   },
