@@ -1,0 +1,38 @@
+name: "CI"
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    types:
+      - "opened"
+      - "synchronize"
+
+jobs:
+  ci:
+    name: "Continuous Integration"
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v4"
+        with:
+          fetch-depth: 2
+
+      - name: "Setup NodeJS"
+        uses: "actions/setup-node@v4"
+        with:
+          node-version: 20
+
+      - name: "Setup PNPM"
+        uses: "pnpm/action-setup@v2"
+        with:
+          version: 9
+          run_install: true
+
+      - name: "Build"
+        run: "pnpm generate && pnpm build"
+
+      - name: "Tests"
+        run: "pnpm test"
