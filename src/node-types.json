@@ -1,11 +1,102 @@
 [
   {
-    "type": "document",
+    "type": "blob_field",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "blob_value",
+          "named": true
+        },
+        {
+          "type": "field_marker",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "length",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "blob_value",
     "named": true,
     "fields": {}
   },
   {
-    "type": "hello",
+    "type": "document",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "blob_field",
+          "named": true
+        },
+        {
+          "type": "int_field",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "int_field",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "field_marker",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "int_value",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "int_value",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "length",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "\n",
     "named": false
+  },
+  {
+    "type": " ",
+    "named": false
+  },
+  {
+    "type": "field_marker",
+    "named": true
+  },
+  {
+    "type": "identifier",
+    "named": true
   }
 ]
