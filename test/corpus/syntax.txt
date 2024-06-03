@@ -55,3 +55,22 @@ Hello, world
     (length)
     (blob_value))
 )
+====================
+Other order
+====================
+:b text 13
+Hello, world
+
+:i count 2
+--------------------
+(document
+  (blob_field
+    (field_marker)
+    (identifier)
+    (length)
+    (blob_value))
+  (int_field
+    (field_marker)
+    (identifier)
+    (int_value))
+)
