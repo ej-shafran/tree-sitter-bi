@@ -7,7 +7,7 @@
   [[https://tree-sitter.github.io/tree-sitter/creating-parsers][custom
   TreeSitter parsers]].
 
-  [[./screenshot.png]]
+  [[./screenshot.png?raw=true]]
 
 ** Running Locally
 
