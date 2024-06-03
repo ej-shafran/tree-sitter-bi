@@ -37,7 +37,7 @@ static bool parse_blob_value(Scanner *s, TSLexer *lexer,
 
   for (int i = 0; i < s->count; i++) {
     if (lexer->eof(lexer))
-      return false;
+      break;
 
     lexer->advance(lexer, false);
   }
