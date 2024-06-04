@@ -45,6 +45,27 @@ Finally, you can run the tests in the `test/corpus/` directory:
 pnpm test
 ```
 
+## Use With Neovim
+
+Install the repo as a plugin. Using `lazy.nvim` this would be:
+
+```lua
+return {
+  {
+    "ej-shafran/tree-sitter-bi",
+    -- Make sure you have `nvim-treesitter` installed.
+    -- This plugin only works if `nvim-treesitter` is installed,
+    -- but it doesn't really matter when, so you don't have to
+    -- have it be in the `dependencies` list, it can be
+    -- installed separately.
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+  }
+}
+```
+
+Once the plugin is installed, you can now run `:TSInstall bi` and you'll have
+syntax highlighting inside any `.bi` file!
+
 ## TODOs
 
-- [ ] Make this usable directly as a Neovim plugin
+- [x] Make this usable directly as a Neovim plugin
