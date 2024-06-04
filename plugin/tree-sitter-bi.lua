@@ -16,7 +16,7 @@ local parser_configs = parsers.get_parser_configs()
 
 parser_configs.bi = {
   install_info = {
-    url = "https://github.com/ej-shafran/tree-sitter-bi",
+    url = vim.fn.expand "<sfile>:h:h",
     branch = "main",
     files = { "src/parser.c", "src/scanner.c" },
   },
